@@ -27,6 +27,7 @@ export class Board {
 		this.squares = [];
 		this.size = parseInt(config.numColumns);
 		this.selected = [];
+		this.selector = null;
 		this.groupSelectors = [];
 
 		config.baseSquares.forEach((square) => {
@@ -34,26 +35,75 @@ export class Board {
 		});
 	}
 
-	rotateGroup (direction) {
+	rotateGroup (direction, forceRedraw, redraw) {
 		//0 for clockwise
 		//1 for counter clockwise
+		console.log('something rotateGroup')
+
 		if( this.selected.length === 0 ) {
 			return;
 		}
 
-		this.selected.forEach((square) => {
-			if( direction === 0 ) {
-				//rotate clockwise
-				let temp = square.row;
-				square.row = square.column;
-				square.column = this.size - temp - 1;
-			} else {
-				//rotate counter clockwise
-				let temp = square.row;
-				square.row = this.size - square.column - 1;
-				square.column = temp;
-			}
+		const tempSelectedIndex = []
+
+
+		//rotate the selected squares and update them in the squares array
+		this.selected.forEach((square, selectedIndex) => {
+			const configIndex = this.squares.findIndex((s) => {
+				return s.row === square?.row && s.column === square?.column;
+			});
+			console.log(configIndex);
+			tempSelectedIndex.push(configIndex);
 		});
+
+		this.selected.forEach((square, selectedIndex) => {
+			if( direction === 0 && tempSelectedIndex[selectedIndex] !== -1) {
+				//rotate clockwise
+				switch (selectedIndex) {
+					case 0:
+					  	this.squares[tempSelectedIndex[selectedIndex]].column += 1;
+						console.log(`case 0`);
+					  	break;
+					case 1:
+						this.squares[tempSelectedIndex[selectedIndex]].row += 1;
+						console.log(`case 1`);
+						break;
+					case 2:
+						this.squares[tempSelectedIndex[selectedIndex]].row -= 1;
+					  	break;
+					case 3:
+						this.squares[tempSelectedIndex[selectedIndex]].column -= 1;
+						break;
+					default:
+					  console.log(`Sorry`);
+				  }
+			} else {
+				switch (selectedIndex){
+					case 0:
+						this.squares[tempSelectedIndex[selectedIndex]].row += 1;
+					  	break;
+					case 1:
+						this.squares[tempSelectedIndex[selectedIndex]].column -= 1;
+						break;
+					case 2:
+						this.squares[tempSelectedIndex[selectedIndex]].column += 1;
+					  	break;
+					case 3:
+						this.squares[tempSelectedIndex[selectedIndex]].row -= 1;
+						break;
+					default:
+					  console.log(`Sorry`);
+				}
+			}
+		}
+		);
+
+
+		//clear the selected squares
+		this.selected = [];
+		this.selector = null;
+
+		forceRedraw(redraw + 1);
 	}
 }
 

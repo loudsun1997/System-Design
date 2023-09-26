@@ -21,13 +21,10 @@ function App() {
 
 	const handleCanvasClick = (e) => {
 		const canvasRect = canvasRef.current.getBoundingClientRect();
-		console.log(canvasRect);
 
 		let x = e.clientX - canvasRect.left;
 		let y = e.clientY - canvasRect.top;
 
-		console.log(x);
-		console.log(y);
 		processClick(model, canvasRef.current, x, y, forceRedraw, redraw);
 	}
 
@@ -42,8 +39,8 @@ function App() {
 				onClick={handleCanvasClick}>
 			</canvas>
 			<button onClick={(e)=>{handleReset()}}>Reset</button>
-			<button onClick={()=>{rotateGroup(0)}}>Clockwise</button>
-			<button onClick={()=>{rotateGroup(1)}}>Counter Clockwise</button>
+			<button onClick={()=>{rotateGroup(0, model, forceRedraw, redraw)}}>Clockwise</button>
+			<button onClick={()=>{rotateGroup(1, model, forceRedraw, redraw)}}>Counter Clockwise</button>
 			<button onClick={()=>{setConfig(0)}}>4x4</button>
 			<button onClick={()=>{setConfig(1)}}>5x5</button>
 			<button onClick={()=>{setConfig(2)}}>6x6</button>

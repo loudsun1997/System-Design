@@ -1,7 +1,4 @@
-import {Group} from "../model/Model.js"
-
 export function processClick (model, canvas, x, y, forceRedraw, redraw) {
-	console.log('something happened')
 	//check if click is within a group selector
 	//if so, select that group
 	if( model.board.groupSelectors.length === 0 ) {
@@ -14,9 +11,10 @@ export function processClick (model, canvas, x, y, forceRedraw, redraw) {
 
 	if( group ) {
 		selectGroup(group, model, canvas, forceRedraw, redraw);
+		model.board.selector = group;
 	}
 	console.log(group);
-	console.log(redraw)
+	console.log(redraw);
 }
 
 export function handleReset (setModel, forceRedraw, redraw) {
@@ -27,6 +25,8 @@ export function handleReset (setModel, forceRedraw, redraw) {
 export function rotateGroup (direction, model, forceRedraw, redraw) {
 	//0 for clockwise
 	//1 for counter clockwise
+
+	model.board.rotateGroup(direction, forceRedraw, redraw);
 }
 
 export function setConfig (configIndex, model, forceRedraw, redraw) {

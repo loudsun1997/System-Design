@@ -12,26 +12,11 @@ export function redrawCanvas(model, canvas, app) {
 		ctx.strokeRect(square.column * squareSize, square.row * squareSize, squareSize, squareSize);
 	});
 
-	//draw bounding box around 4 squares
-	// ctx.strokeStyle = 'black';
-	// ctx.lineWidth = 10;
-	// ctx.strokeRect(0, 0, squareSize * 4, squareSize * 4);
-
-	//draw group selectors
-	
-	for( let group in model.board.selected ) {
-		console.log(group);
-		const x = model.board.groupSelectors[group].x;
-		const y = model.board.groupSelectors[group].y;
-		const radius = model.board.groupSelectors[group].radius;
-
-		ctx.lineWidth = 5;
-		ctx.strokeStyle = 'red';
-		ctx.fillStyle = 'red';
-		ctx.beginPath();
-		ctx.arc(x, y, radius, 0, 2 * Math.PI);
-		ctx.fill();
-		ctx.stroke();
+	//draw bounding box around 4 squares model.board.selected[0] and model.board.selected[3]
+	ctx.strokeStyle = 'red';
+	ctx.lineWidth = 10;
+	if (model.board.selector) {
+		ctx.strokeRect(model.board.selector.column * squareSize, model.board.selector.row * squareSize, squareSize * 2, squareSize * 2);
 	}
 
 	for( let i = 1; i <= model.board.size - 1; i++ ) {
@@ -48,6 +33,7 @@ export function redrawCanvas(model, canvas, app) {
 			ctx.stroke();
 
 			model.board.groupSelectors.push({x: x, y: y, radius: 15, row: j - 1, column: i - 1});
+
 		}
 	}
 
