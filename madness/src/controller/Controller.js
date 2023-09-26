@@ -1,6 +1,6 @@
 import {Group} from "../model/Model.js"
 
-export function processClick (model, canvas, x, y) {
+export function processClick (model, canvas, x, y, forceRedraw, redraw) {
 	console.log('something happened')
 	//check if click is within a group selector
 	//if so, select that group
@@ -13,8 +13,10 @@ export function processClick (model, canvas, x, y) {
 	});
 
 	if( group ) {
-		selectGroup(group, model, canvas);
+		selectGroup(group, model, canvas, forceRedraw, redraw);
 	}
+	console.log(group);
+	console.log(redraw)
 }
 
 export function handleReset (setModel, forceRedraw, redraw) {
@@ -30,7 +32,7 @@ export function rotateGroup (direction, model, forceRedraw, redraw) {
 export function setConfig (configIndex, model, forceRedraw, redraw) {
 }
 
-export function selectGroup (group, model, canvas) {
+export function selectGroup (group, model, canvas, forceRedraw, redraw) {
 	//push 4 squares into model.board.selected, group is the row and column of the first square
 	const squareOne = model.board.squares.find((square) => {
 		return square.row === group.row && square.column === group.column;
@@ -45,8 +47,14 @@ export function selectGroup (group, model, canvas) {
 		return square.row === group.row + 1 && square.column === group.column + 1;
 	});
 
+	model.board.selected = [];
+
 	model.board.selected.push(squareOne);
 	model.board.selected.push(squareTwo);
 	model.board.selected.push(squareThree);
 	model.board.selected.push(squareFour);
+
+	console.log(model.board.selected)
+	console.log(redraw)
+	forceRedraw(redraw + 1);
 }
