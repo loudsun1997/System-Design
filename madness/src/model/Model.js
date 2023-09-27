@@ -35,10 +35,52 @@ export class Board {
 		});
 	}
 
+	isSolved () {
+		return this.squares.length === 0;
+	}
+
+	removeSameColorGroup (forceRedraw, redraw) {
+		console.log(`removeSameColorGroup`);
+
+		function getColor(row, col, squares) {
+			const square = squares.find(s => s.row === row && s.column === col);
+			return square ? square.color : null;
+		}
+
+		function isSameColor(row, col, squares) {
+			const color = getColor(row, col, squares);
+			return color &&
+				   getColor(row + 1, col, squares) === color &&
+				   getColor(row, col + 1, squares) === color &&
+				   getColor(row + 1, col + 1, squares) === color;
+		}
+
+		function removeSquare(row, col, squares) {
+			return squares.filter(square =>
+				!(square.row === row && square.column === col) &&
+				!(square.row === row + 1 && square.column === col) &&
+				!(square.row === row && square.column === col + 1) &&
+				!(square.row === row + 1 && square.column === col + 1)
+			);
+		}
+
+		function checkAndRemoveSquares(squares) {
+			for (let row = 0; row < 4; row++) {
+				for (let col = 0; col < 4; col++) {
+					if (isSameColor(row, col, squares)) {
+						squares = removeSquare(row, col, squares);
+					}
+				}
+			}
+			return squares;
+		}
+
+		this.squares = checkAndRemoveSquares(this.squares);
+	}
+
 	rotateGroup (direction, forceRedraw, redraw) {
 		//0 for clockwise
 		//1 for counter clockwise
-		console.log('something rotateGroup')
 
 		if( this.selected.length === 0 ) {
 			return;
@@ -52,7 +94,6 @@ export class Board {
 			const configIndex = this.squares.findIndex((s) => {
 				return s.row === square?.row && s.column === square?.column;
 			});
-			console.log(configIndex);
 			tempSelectedIndex.push(configIndex);
 		});
 
@@ -61,38 +102,50 @@ export class Board {
 				//rotate clockwise
 				switch (selectedIndex) {
 					case 0:
-					  	this.squares[tempSelectedIndex[selectedIndex]].column += 1;
-						console.log(`case 0`);
+						if (this.squares[tempSelectedIndex[selectedIndex]]) {
+							this.squares[tempSelectedIndex[selectedIndex]].column += 1;
+						}
 					  	break;
 					case 1:
-						this.squares[tempSelectedIndex[selectedIndex]].row += 1;
-						console.log(`case 1`);
+						if (this.squares[tempSelectedIndex[selectedIndex]]) {
+							this.squares[tempSelectedIndex[selectedIndex]].row += 1;
+						}
 						break;
 					case 2:
-						this.squares[tempSelectedIndex[selectedIndex]].row -= 1;
-					  	break;
+						if (this.squares[tempSelectedIndex[selectedIndex]]) {
+							this.squares[tempSelectedIndex[selectedIndex]].row -= 1;
+						}
+						break;
 					case 3:
-						this.squares[tempSelectedIndex[selectedIndex]].column -= 1;
+						if (this.squares[tempSelectedIndex[selectedIndex]]) {
+							this.squares[tempSelectedIndex[selectedIndex]].column -= 1;
+						}
 						break;
 					default:
-					  console.log(`Sorry`);
 				  }
 			} else {
 				switch (selectedIndex){
 					case 0:
-						this.squares[tempSelectedIndex[selectedIndex]].row += 1;
+						if ( this.squares[tempSelectedIndex[selectedIndex]]) {
+							this.squares[tempSelectedIndex[selectedIndex]].row += 1;
+						}
 					  	break;
 					case 1:
-						this.squares[tempSelectedIndex[selectedIndex]].column -= 1;
+						if ( this.squares[tempSelectedIndex[selectedIndex]]) {
+							this.squares[tempSelectedIndex[selectedIndex]].column -= 1;
+						}
 						break;
 					case 2:
-						this.squares[tempSelectedIndex[selectedIndex]].column += 1;
+						if ( this.squares[tempSelectedIndex[selectedIndex]]) {
+							this.squares[tempSelectedIndex[selectedIndex]].column += 1;
+						}
 					  	break;
 					case 3:
-						this.squares[tempSelectedIndex[selectedIndex]].row -= 1;
+						if ( this.squares[tempSelectedIndex[selectedIndex]]) {
+							this.squares[tempSelectedIndex[selectedIndex]].row -= 1;
+						}
 						break;
 					default:
-					  console.log(`Sorry`);
 				}
 			}
 		}
@@ -102,6 +155,8 @@ export class Board {
 		//clear the selected squares
 		this.selected = [];
 		this.selector = null;
+
+		this.removeSameColorGroup(forceRedraw, redraw);
 
 		forceRedraw(redraw + 1);
 	}
@@ -115,6 +170,12 @@ export class Model {
 		this.victory = false;
 		this.board = new Board(this.config[this.currentConfig]);
 
+	}
+
+	checkVictory () {
+		if (this.board.isSolved()) {
+			this.victory = true;
+		}
 	}
 }
 

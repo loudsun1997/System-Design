@@ -13,8 +13,8 @@ export function processClick (model, canvas, x, y, forceRedraw, redraw) {
 		selectGroup(group, model, canvas, forceRedraw, redraw);
 		model.board.selector = group;
 	}
-	console.log(group);
-	console.log(redraw);
+	// console.log(group);
+	// console.log(redraw);
 }
 
 export function handleReset (setModel, forceRedraw, redraw) {
@@ -54,7 +54,7 @@ export function selectGroup (group, model, canvas, forceRedraw, redraw) {
 	model.board.selected.push(squareThree);
 	model.board.selected.push(squareFour);
 
-	console.log(model.board.selected)
-	console.log(redraw)
+	// console.log(model.board.selected)
+	// console.log(redraw)
 	forceRedraw(redraw + 1);
 }

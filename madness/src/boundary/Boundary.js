@@ -4,6 +4,33 @@ export function redrawCanvas(model, canvas, app) {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	const squareSize = canvas.width / model.board.size;
 
+	//draw squares base on squaresize
+	ctx.lineWidth = 2;
+	ctx.strokeStyle = 'black';
+	const size = model.board.size;
+	for( let i = 0; i <= size; i++ ) {
+		ctx.beginPath();
+		ctx.moveTo(0, i * squareSize);
+		ctx.lineTo(canvas.width, i * squareSize);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(i * squareSize, 0);
+		ctx.lineTo(i * squareSize, canvas.height);
+		ctx.stroke();
+	}
+
+	//draw victory banner
+	model.checkVictory();
+	if (model.victory) {
+		ctx.fillStyle = 'red';
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		ctx.font = '48px serif';
+		ctx.fillStyle = 'black';
+		ctx.fillText('Victory!', canvas.width / 3, canvas.height / 2);
+		return;
+	}
+
 	model.board.squares.forEach((square) => {
 		ctx.fillStyle = square.color;
 		ctx.fillRect(square.column * squareSize, square.row * squareSize, squareSize, squareSize);
