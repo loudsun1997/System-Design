@@ -37,6 +37,8 @@ export function redrawCanvas(model, canvas, app) {
 		ctx.strokeRect(square.column * squareSize, square.row * squareSize, squareSize, squareSize);
 	});
 
+	model.board.groupSelectors = [];
+
 	for( let i = 1; i <= model.board.size - 1; i++ ) {
 		for( let j = 1; j <= model.board.size - 1; j++ ) {
 			const x = (canvas.width / model.board.size) * i;
@@ -59,7 +61,6 @@ export function redrawCanvas(model, canvas, app) {
 			}
 
 			model.board.groupSelectors.push({x: x, y: y, radius: 15, row: j - 1, column: i - 1});
-
 		}
 	}
 
@@ -68,6 +69,7 @@ export function redrawCanvas(model, canvas, app) {
 	if (model.board.selector) {
 		ctx.strokeRect(model.board.selector.column * squareSize, model.board.selector.row * squareSize, squareSize * 2, squareSize * 2);
 	}
+
 
 	console.log("redrew canvas")
 }

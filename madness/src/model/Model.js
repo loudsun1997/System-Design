@@ -39,43 +39,31 @@ export class Board {
 		return this.squares.length === 0;
 	}
 
-	removeSameColorGroup (forceRedraw, redraw) {
+	removeSameColorGroup (model) {
 		console.log(`removeSameColorGroup`);
 
-		function getColor(row, col, squares) {
-			const square = squares.find(s => s.row === row && s.column === col);
-			return square ? square.color : null;
-		}
+		const allSameColor = this.selected?.every(square => square?.color === this.selected[0]?.color);
 
-		function isSameColor(row, col, squares) {
-			const color = getColor(row, col, squares);
-			return color &&
-				   getColor(row + 1, col, squares) === color &&
-				   getColor(row, col + 1, squares) === color &&
-				   getColor(row + 1, col + 1, squares) === color;
-		}
+		if (allSameColor) {
+			const colorToRemove = this.selected[0]?.color;
 
-		function removeSquare(row, col, squares) {
-			return squares.filter(square =>
-				!(square.row === row && square.column === col) &&
-				!(square.row === row + 1 && square.column === col) &&
-				!(square.row === row && square.column === col + 1) &&
-				!(square.row === row + 1 && square.column === col + 1)
-			);
-		}
+			while (this.selected.length) {
+				this.selected.pop();
+			}
 
-		function checkAndRemoveSquares(squares) {
-			for (let row = 0; row < 4; row++) {
-				for (let col = 0; col < 4; col++) {
-					if (isSameColor(row, col, squares)) {
-						squares = removeSquare(row, col, squares);
-					}
+			for (let i = this.squares.length - 1; i >= 0; i--) {
+				if (this.squares[i]?.color === colorToRemove) {
+					this.squares.splice(i, 1);
 				}
 			}
-			return squares;
-		}
 
-		this.squares = checkAndRemoveSquares(this.squares);
+			if (!model.victory){
+				model.moveCount++;
+			}
+
+			this.selector = null;
+			this.selected = [];
+		}
 	}
 
 	rotateGroup (model, direction, forceRedraw, redraw) {
@@ -160,7 +148,6 @@ export class Board {
 		this.selected = [];
 		this.selector = null;
 
-		this.removeSameColorGroup(forceRedraw, redraw);
 
 		forceRedraw(redraw + 1);
 	}

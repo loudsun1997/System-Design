@@ -11,7 +11,6 @@ export function processClick (model, canvas, x, y, forceRedraw, redraw) {
 
 	if( group ) {
 		selectGroup(group, model, canvas, forceRedraw, redraw);
-		model.board.selector = group;
 	}
 	// console.log(group);
 	// console.log(redraw);
@@ -58,5 +57,7 @@ export function selectGroup (group, model, canvas, forceRedraw, redraw) {
 
 	// console.log(model.board.selected)
 	// console.log(redraw)
+	model.board.selector = group;
+	model.board.removeSameColorGroup(model);
 	forceRedraw(redraw + 1);
 }
