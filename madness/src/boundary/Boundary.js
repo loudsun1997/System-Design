@@ -4,7 +4,6 @@ export function redrawCanvas(model, canvas, app) {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	const squareSize = canvas.width / model.board.size;
 
-	//draw squares base on squaresize
 	ctx.lineWidth = 2;
 	ctx.strokeStyle = 'black';
 	const size = model.board.size;
@@ -20,7 +19,6 @@ export function redrawCanvas(model, canvas, app) {
 		ctx.stroke();
 	}
 
-	//draw victory banner
 	model.checkVictory();
 	if (model.victory) {
 		ctx.fillStyle = 'red';
@@ -52,7 +50,6 @@ export function redrawCanvas(model, canvas, app) {
 			ctx.fill();
 			ctx.stroke();
 
-			// if i and j matches model.board.selector, draw a red circle
 			if (model.board.selector && model.board.selector.row === j - 1 && model.board.selector.column === i - 1) {
 				ctx.fillStyle = 'red';
 				ctx.beginPath();
@@ -66,11 +63,11 @@ export function redrawCanvas(model, canvas, app) {
 		}
 	}
 
-	//draw bounding box around 4 squares model.board.selected[0] and model.board.selected[3]
 	ctx.strokeStyle = 'red';
 	ctx.lineWidth = 10;
 	if (model.board.selector) {
 		ctx.strokeRect(model.board.selector.column * squareSize, model.board.selector.row * squareSize, squareSize * 2, squareSize * 2);
 	}
 
+	console.log("redrew canvas")
 }

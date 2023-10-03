@@ -43,6 +43,7 @@ function App() {
 			<button onClick={()=>{setConfig(0, model, forceRedraw, redraw)}}>4x4</button>
 			<button onClick={()=>{setConfig(1, model, forceRedraw, redraw)}}>5x5</button>
 			<button onClick={()=>{setConfig(2, model, forceRedraw, redraw)}}>6x6</button>
+			<button onClick={()=>{forceRedraw(redraw+1)}}>Force redraw</button>
 			<textarea id="moveCount" value={model.moveCount} readOnly></textarea>
 		</div>
   	);
