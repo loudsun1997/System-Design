@@ -78,12 +78,16 @@ export class Board {
 		this.squares = checkAndRemoveSquares(this.squares);
 	}
 
-	rotateGroup (direction, forceRedraw, redraw) {
+	rotateGroup (model, direction, forceRedraw, redraw) {
 		//0 for clockwise
 		//1 for counter clockwise
 
 		if( this.selected.length === 0 ) {
 			return;
+		}
+
+		if (!model.victory){
+			model.moveCount++;
 		}
 
 		const tempSelectedIndex = []
@@ -176,6 +180,19 @@ export class Model {
 		if (this.board.isSolved()) {
 			this.victory = true;
 		}
+	}
+
+	setConfig (configIndex) {
+		this.currentConfig = configIndex;
+		this.board = new Board(this.config[this.currentConfig]);
+		this.moveCount = 0;
+		this.victory = false;
+	}
+
+	resetConfig () {
+		this.board = new Board(this.config[this.currentConfig]);
+		this.moveCount = 0;
+		this.victory = false;
 	}
 }
 

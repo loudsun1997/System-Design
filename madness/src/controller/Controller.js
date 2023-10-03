@@ -17,19 +17,21 @@ export function processClick (model, canvas, x, y, forceRedraw, redraw) {
 	// console.log(redraw);
 }
 
-export function handleReset (setModel, forceRedraw, redraw) {
-	// setModel(new Model());
-	// forceRedraw(redraw + 1);
+export function handleReset (model, forceRedraw, redraw) {
+	model.resetConfig();
+	forceRedraw(redraw + 1);
 }
 
 export function rotateGroup (direction, model, forceRedraw, redraw) {
 	//0 for clockwise
 	//1 for counter clockwise
 
-	model.board.rotateGroup(direction, forceRedraw, redraw);
+	model.board.rotateGroup(model, direction, forceRedraw, redraw);
 }
 
 export function setConfig (configIndex, model, forceRedraw, redraw) {
+	model.setConfig(configIndex);
+	forceRedraw(redraw + 1);
 }
 
 export function selectGroup (group, model, canvas, forceRedraw, redraw) {

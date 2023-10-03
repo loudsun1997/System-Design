@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { useRef, useState, useEffect } from 'react';
 import { Model } from './model/Model';
@@ -38,13 +37,13 @@ function App() {
 				height="600"
 				onClick={handleCanvasClick}>
 			</canvas>
-			<button onClick={(e)=>{handleReset()}}>Reset</button>
+			<button onClick={(e)=>{handleReset(model, forceRedraw, redraw)}}>Reset</button>
 			<button onClick={()=>{rotateGroup(0, model, forceRedraw, redraw)}}>Clockwise</button>
 			<button onClick={()=>{rotateGroup(1, model, forceRedraw, redraw)}}>Counter Clockwise</button>
-			<button onClick={()=>{setConfig(0)}}>4x4</button>
-			<button onClick={()=>{setConfig(1)}}>5x5</button>
-			<button onClick={()=>{setConfig(2)}}>6x6</button>
-
+			<button onClick={()=>{setConfig(0, model, forceRedraw, redraw)}}>4x4</button>
+			<button onClick={()=>{setConfig(1, model, forceRedraw, redraw)}}>5x5</button>
+			<button onClick={()=>{setConfig(2, model, forceRedraw, redraw)}}>6x6</button>
+			<textarea id="moveCount" value={model.moveCount} readOnly></textarea>
 		</div>
   	);
 }
