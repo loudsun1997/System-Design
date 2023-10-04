@@ -11,7 +11,7 @@ import { processClick,
 function App() {
 	const canvasRef = useRef(null);
 	const appRef = useRef(null);
-	const [model, setModel] = useState(new Model());
+	const [model, ] = useState(new Model());
 	const [redraw, forceRedraw] = useState(1);
 
 	useEffect(() => {
@@ -31,6 +31,7 @@ function App() {
 		<div className="App">
 			<canvas
 				id="canvas"
+				data-testid="canvas"
 				tabIndex={1}
 				ref={canvasRef}
 				width="600"
@@ -43,7 +44,6 @@ function App() {
 			<button onClick={()=>{setConfig(0, model, forceRedraw, redraw)}}>4x4</button>
 			<button onClick={()=>{setConfig(1, model, forceRedraw, redraw)}}>5x5</button>
 			<button onClick={()=>{setConfig(2, model, forceRedraw, redraw)}}>6x6</button>
-			<button onClick={()=>{forceRedraw(redraw+1)}}>Force redraw</button>
 			<textarea id="moveCount" value={model.moveCount} readOnly></textarea>
 		</div>
   	);

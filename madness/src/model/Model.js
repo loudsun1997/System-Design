@@ -8,20 +8,6 @@ export class Square {
 	}
 }
 
-export class Group {
-	constructor() {
-		this.row = 0;
-		this.column = 0;
-	}
-}
-
-export class location {
-	constructor() {
-		this.x = 0;
-		this.y = 0;
-	}
-}
-
 export class Board {
 	constructor(config) {
 		this.squares = [];
