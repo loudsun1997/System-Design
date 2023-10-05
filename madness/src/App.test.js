@@ -63,15 +63,15 @@ describe('Board', () => {
         expect(board.squares).toEqual(TestConfigs.fourByFourBlueRemoved);
     });
 
-    // test('rotateGroup rotates selected squares', () => {
-    //     board.selected = [
-    //         { color: 'red', row: 1, column: 1 },
-    //         { color: 'blue', row: 2, column: 2 }
-    //     ];
-    //     const forceRedraw = jest.fn();
-    //     board.rotateGroup(model, 0, forceRedraw, 1);
-    //     expect(forceRedraw).toHaveBeenCalled();
-    // });
+    test('rotateGroup rotates selected squares', () => {
+        board.selected = [
+            { color: 'red', row: 1, column: 1 },
+            { color: 'blue', row: 2, column: 2 }
+        ];
+        const forceRedraw = jest.fn();
+        board.rotateGroup(model, 0, forceRedraw, 1);
+        expect(forceRedraw).toHaveBeenCalled();
+    });
 });
 
 describe('Controllers', () => {
@@ -165,22 +165,52 @@ describe('redrawCanvas', () => {
 
 });
 
-HTMLCanvasElement.prototype.getContext = jest.fn(() => {
-    return {
-        clearRect: jest.fn(),
-        beginPath: jest.fn(),
-        moveTo: jest.fn(),
-        lineTo: jest.fn(),
-        stroke: jest.fn(),
-        fillRect: jest.fn(),
-        fillText: jest.fn(),
-        arc: jest.fn(),
-        fill: jest.fn(),
-        strokeRect: jest.fn(),
-    };
-});
-
 describe('App', () => {
+	    // Mock canvas context
+		const mockCanvasContext = {
+			clearRect: jest.fn(),
+			beginPath: jest.fn(),
+			moveTo: jest.fn(),
+			lineTo: jest.fn(),
+			stroke: jest.fn(),
+			fillRect: jest.fn(),
+			fillText: jest.fn(),
+			arc: jest.fn(),
+			fill: jest.fn(),
+			strokeRect: jest.fn(),
+			// ... any other methods you use on the canvas context ...
+		};
+
+		// Mock useRef
+		const mockCanvasRef = {
+			current: {
+				getContext: jest.fn(() => mockCanvasContext),
+				width: 600,
+				height: 600,
+				getBoundingClientRect: jest.fn(() => ({
+					top: 0,
+					left: 0,
+					right: 600,
+					bottom: 600,
+				})),
+			},
+		};
+
+		const mockAppRef = {
+			current: {}
+		};
+
+		// Mock useRef to return mockCanvasRef and mockAppRef in sequence
+		jest.mock('react', () => {
+			const originalReact = jest.requireActual('react');
+			return {
+				...originalReact,
+				useRef: jest.fn()
+					.mockReturnValueOnce(mockCanvasRef)
+					.mockReturnValueOnce(mockAppRef)
+			};
+		});
+
     test('renders App component', () => {
         const { getByText, getByTestId } = render(<App />);
 
