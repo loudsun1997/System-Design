@@ -29,23 +29,30 @@ function App() {
 
   	return (
 		<div className="App">
-			<canvas
-				id="canvas"
-				data-testid="canvas"
-				tabIndex={1}
-				ref={canvasRef}
-				width="600"
-				height="600"
-				onClick={handleCanvasClick}>
-			</canvas>
-			<button onClick={(e)=>{handleReset(model, forceRedraw, redraw)}}>Reset</button>
+        <canvas
+            id="canvas"
+            data-testid="canvas"
+            tabIndex={1}
+            ref={canvasRef}
+            width="600"
+            height="600"
+            onClick={handleCanvasClick}
+        ></canvas>
+
+        <div className="controls">
+		<button onClick={(e)=>{handleReset(model, forceRedraw, redraw)}}>Reset</button>
 			<button onClick={()=>{rotateGroup(0, model, forceRedraw, redraw)}}>Clockwise</button>
 			<button onClick={()=>{rotateGroup(1, model, forceRedraw, redraw)}}>Counter Clockwise</button>
 			<button onClick={()=>{setConfig(0, model, forceRedraw, redraw)}}>4x4</button>
 			<button onClick={()=>{setConfig(1, model, forceRedraw, redraw)}}>5x5</button>
 			<button onClick={()=>{setConfig(2, model, forceRedraw, redraw)}}>6x6</button>
-			<textarea data-testid="moveCount" id="moveCount" value={model.moveCount} readOnly></textarea>
-		</div>
+        </div>
+
+        <div className="move-count">
+            <div>Move Count:</div>
+            <textarea data-testid="moveCount" id="moveCount" value={model.moveCount} readOnly></textarea>
+        </div>
+    </div>
   	);
 }
 

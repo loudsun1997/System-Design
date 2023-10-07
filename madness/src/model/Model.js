@@ -28,9 +28,14 @@ export class Board {
 	removeSameColorGroup (model) {
 		console.log(`removeSameColorGroup`);
 
-		const allSameColor = this.selected?.every(square => square?.color === this.selected[0]?.color);
+		const allSameColor = this.selected?.every(square =>
+			square?.color && this.selected[0]?.color && square.color === this.selected[0].color
+		);
 
 		if (allSameColor) {
+			if (!model.victory && this.selected.length > 0){
+				model.moveCount++;
+			}
 			const colorToRemove = this.selected[0]?.color;
 
 			while (this.selected.length) {
@@ -41,10 +46,6 @@ export class Board {
 				if (this.squares[i]?.color === colorToRemove) {
 					this.squares.splice(i, 1);
 				}
-			}
-
-			if (!model.victory){
-				model.moveCount++;
 			}
 
 			this.selector = null;
@@ -67,7 +68,6 @@ export class Board {
 		const tempSelectedIndex = []
 
 
-		//rotate the selected squares and update them in the squares array
 		this.selected.forEach((square, selectedIndex) => {
 			const configIndex = this.squares.findIndex((s) => {
 				return s.row === square?.row && s.column === square?.column;
@@ -77,7 +77,6 @@ export class Board {
 
 		this.selected.forEach((square, selectedIndex) => {
 			if( direction === 0 && tempSelectedIndex[selectedIndex] !== -1) {
-				//rotate clockwise
 				switch (selectedIndex) {
 					case 0:
 						if (this.squares[tempSelectedIndex[selectedIndex]]) {
@@ -129,11 +128,8 @@ export class Board {
 		}
 		);
 
-
-		//clear the selected squares
 		this.selected = [];
 		this.selector = null;
-
 
 		forceRedraw(redraw + 1);
 	}

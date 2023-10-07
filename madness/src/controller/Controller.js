@@ -1,6 +1,5 @@
 export function processClick (model, canvas, x, y, forceRedraw, redraw) {
-	//check if click is within a group selector
-	//if so, select that group
+
 	if( model.board.groupSelectors.length === 0 ) {
 		return;
 	}
@@ -12,8 +11,6 @@ export function processClick (model, canvas, x, y, forceRedraw, redraw) {
 	if( group ) {
 		selectGroup(group, model, canvas, forceRedraw, redraw);
 	}
-	// console.log(group);
-	// console.log(redraw);
 }
 
 export function handleReset (model, forceRedraw, redraw) {
@@ -22,9 +19,6 @@ export function handleReset (model, forceRedraw, redraw) {
 }
 
 export function rotateGroup (direction, model, forceRedraw, redraw) {
-	//0 for clockwise
-	//1 for counter clockwise
-
 	model.board.rotateGroup(model, direction, forceRedraw, redraw);
 }
 
@@ -34,7 +28,6 @@ export function setConfig (configIndex, model, forceRedraw, redraw) {
 }
 
 export function selectGroup (group, model, canvas, forceRedraw, redraw) {
-	//push 4 squares into model.board.selected, group is the row and column of the first square
 	const squareOne = model.board.squares.find((square) => {
 		return square.row === group.row && square.column === group.column;
 	});
@@ -55,8 +48,7 @@ export function selectGroup (group, model, canvas, forceRedraw, redraw) {
 	model.board.selected.push(squareThree);
 	model.board.selected.push(squareFour);
 
-	// console.log(model.board.selected)
-	// console.log(redraw)
+
 	model.board.selector = group;
 	model.board.removeSameColorGroup(model);
 	forceRedraw(redraw + 1);

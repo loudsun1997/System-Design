@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import App from './App';
 import { Model, Board } from './model/Model';
 import { config_4x4 } from './model/configs';
@@ -141,23 +141,18 @@ describe('redrawCanvas', () => {
             width: 400,
             height: 400
         };
-        app = {}; // Mock any necessary properties/methods of app if needed
+        app = {};
     });
 
     test('redraws the canvas based on the model state', () => {
         redrawCanvas(model, canvas, app);
 
-        // Check if the canvas was cleared
         expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, canvas.width, canvas.height);
 
-        // Check if the grid lines were drawn
         expect(ctx.moveTo).toHaveBeenCalled();
         expect(ctx.lineTo).toHaveBeenCalled();
         expect(ctx.stroke).toHaveBeenCalled();
 
-        // ... Add more assertions based on the logic of redrawCanvas ...
-
-        // Check if the victory message was displayed if model.victory is true
         model.victory = true;
         redrawCanvas(model, canvas, app);
         expect(ctx.fillText).toHaveBeenCalledWith('Victory!', canvas.width / 3, canvas.height / 2);
@@ -166,7 +161,6 @@ describe('redrawCanvas', () => {
 });
 
 describe('App', () => {
-	    // Mock canvas context
 		const mockCanvasContext = {
 			clearRect: jest.fn(),
 			beginPath: jest.fn(),
@@ -178,10 +172,8 @@ describe('App', () => {
 			arc: jest.fn(),
 			fill: jest.fn(),
 			strokeRect: jest.fn(),
-			// ... any other methods you use on the canvas context ...
 		};
 
-		// Mock useRef
 		const mockCanvasRef = {
 			current: {
 				getContext: jest.fn(() => mockCanvasContext),
@@ -200,7 +192,6 @@ describe('App', () => {
 			current: {}
 		};
 
-		// Mock useRef to return mockCanvasRef and mockAppRef in sequence
 		jest.mock('react', () => {
 			const originalReact = jest.requireActual('react');
 			return {
@@ -214,23 +205,14 @@ describe('App', () => {
     test('renders App component', () => {
         const { getByText, getByTestId } = render(<App />);
 
-        // Check if the canvas is rendered
         const canvas = getByTestId('canvas');
         expect(canvas).toBeInTheDocument();
 
-        // Simulate a click on the canvas
         fireEvent.click(canvas);
-        // ... Add assertions based on the expected behavior after clicking the canvas ...
-
-        // Simulate a click on the Reset button
         const resetButton = getByText('Reset');
         fireEvent.click(resetButton);
-        // ... Add assertions based on the expected behavior after clicking the Reset button ...
 
-        // ... Continue with similar tests for other buttons ...
-
-        // Check the move count
         const moveCount = getByTestId('moveCount');
-        expect(moveCount.value).toBe('0'); // Assuming the initial move count is 0
+        expect(moveCount.value).toBe('0'); 
     });
 });
